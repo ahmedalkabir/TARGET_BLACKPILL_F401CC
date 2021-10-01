@@ -1,0 +1,24 @@
+{
+    "MCU_STM32F401xC": {
+        "inherits": [
+            "MCU_STM32F4"
+        ],
+        "public": false,
+        "extra_labels_add": [
+            "STM32F401xC"
+        ],
+        "macros_add": [
+            "STM32F401xC"
+        ]
+    },
+    "BLACKPILL_F401CC": {
+        "inherits": [
+            "MCU_STM32F401xC"
+        ],
+        "detect_code": [
+            "0720"
+        ],
+        "device_name": "STM32F401CCUx"
+    }
+
+}
