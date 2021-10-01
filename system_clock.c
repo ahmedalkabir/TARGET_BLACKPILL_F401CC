@@ -111,16 +111,28 @@ MBED_WEAK uint8_t SetSysClock_PLL_HSE(uint8_t bypass)
             RCC_OscInitStruct.HSEState          = RCC_HSE_BYPASS; // External 8 MHz clock on OSC_IN
         }
 
-        RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-        RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-        RCC_OscInitStruct.PLL.PLLM            = 4;             // VCO input clock = 2 MHz (8 MHz / 4)
-#if (DEVICE_USBDEVICE)
-        RCC_OscInitStruct.PLL.PLLN            = 192;           // VCO output clock = 384 MHz (2 MHz * 192)
-#else /* DEVICE_USBDEVICE */
-        RCC_OscInitStruct.PLL.PLLN            = 200;           // VCO output clock = 400 MHz (2 MHz * 200)
-#endif /* DEVICE_USBDEVICE */
-        RCC_OscInitStruct.PLL.PLLP            = RCC_PLLP_DIV4; // PLLCLK = 100 MHz or 96 MHz (depending on DEVICE_USBDEVICE)
-        RCC_OscInitStruct.PLL.PLLQ            = 8;             // USB clock = 48 MHz (DEVICE_USBDEVICE=1)
+
+
+//         RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+//         RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+//         RCC_OscInitStruct.PLL.PLLM            = 4;             // VCO input clock = 2 MHz (8 MHz / 4)
+// #if (DEVICE_USBDEVICE)
+//         RCC_OscInitStruct.PLL.PLLN            = 192;           // VCO output clock = 384 MHz (2 MHz * 192)
+// #else /* DEVICE_USBDEVICE */
+//         RCC_OscInitStruct.PLL.PLLN            = 200;           // VCO output clock = 400 MHz (2 MHz * 200)
+// #endif /* DEVICE_USBDEVICE */
+//         RCC_OscInitStruct.PLL.PLLP            = RCC_PLLP_DIV4; // PLLCLK = 100 MHz or 96 MHz (depending on DEVICE_USBDEVICE)
+//         RCC_OscInitStruct.PLL.PLLQ            = 8;             // USB clock = 48 MHz (DEVICE_USBDEVICE=1)
+
+        /*
+            notes for me, I'll enable sysclock to be at 84 Mhz 
+            and it's just for learning processor of mbed os
+        */
+        RCC_OscInitStruct.PLL.PLLM = 25;
+        RCC_OscInitStruct.PLL.PLLN = 336;
+        RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
+        RCC_OscInitStruct.PLL.PLLQ = 7;
+
         if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
             return 0; // FAIL
         }
@@ -128,10 +140,10 @@ MBED_WEAK uint8_t SetSysClock_PLL_HSE(uint8_t bypass)
 
     // Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2 clocks dividers
     RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-    RCC_ClkInitStruct.SYSCLKSource   = RCC_SYSCLKSOURCE_PLLCLK; // 100/96 MHz
-    RCC_ClkInitStruct.AHBCLKDivider  = RCC_SYSCLK_DIV1;         // 100/96 MHz
-    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;           // 50/48 MHz
-    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;           // 100/96 MHz
+    RCC_ClkInitStruct.SYSCLKSource   = RCC_SYSCLKSOURCE_PLLCLK; // 
+    RCC_ClkInitStruct.AHBCLKDivider  = RCC_SYSCLK_DIV1;         //
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;           //
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;           // 
     if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK) {
         return 0; // FAIL
     }
