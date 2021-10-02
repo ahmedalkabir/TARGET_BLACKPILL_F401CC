@@ -18,6 +18,10 @@
         "detect_code": [
             "0720"
         ],
+        "supported_application_profiles": [
+            "full",
+            "bare-metal"
+        ],
         "device_name": "STM32F401CCUx"
     }
 
